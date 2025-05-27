@@ -1,19 +1,18 @@
-import os
 from dotenv import load_dotenv
 from kaggle.api.kaggle_api_extended import KaggleApi
 
-load_dotenv()
+TMDB_DATASET = "asaniczka/tmdb-movies-dataset-2023-930k-movies"
+DATA_RAW_PATH = "data/raw"
 
-os.environ['KAGGLE_USERNAME'] = os.getenv('KAGGLE_USERNAME')
-os.environ['KAGGLE_KEY'] = os.getenv('KAGGLE_KEY')
 
-api = KaggleApi()
-api.authenticate()
+def download_dataset():
+    load_dotenv()
 
-# download dataset
-dataset = 'asaniczka/tmdb-movies-dataset-2023-930k-movies'
-destination = 'data/raw'
+    api = KaggleApi()
+    api.authenticate()
 
-os.makedirs(destination, exist_ok=True)
+    api.dataset_download_files(TMDB_DATASET, path=DATA_RAW_PATH, unzip=True)
 
-api.dataset_download_files(dataset, path=destination, unzip=True)
+
+if __name__ == "__main__":
+    download_dataset()
