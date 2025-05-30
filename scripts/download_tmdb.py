@@ -7,5 +7,3 @@ def download_tmdb(path):
     kaggle = KaggleApi()
     kaggle.authenticate()
     kaggle.dataset_download_files(TMDB_DATASET, path=path, unzip=True)
-
-
