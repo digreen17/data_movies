@@ -1,6 +1,6 @@
 [project]
 name = "data-movies"
-version = "0.1.0"
+version = "0.1.0" 
 description = ""
 authors = [
     {name = "Daria",email = "digreen17@mail.ru"}
@@ -11,16 +11,20 @@ requires-python = ">=3.10"
 dependencies = [
     "pandas (>=2.2.3,<3.0.0)",
     "python-dotenv (>=1.1.0,<2.0.0)",
-    "kaggle (>=1.7.4.5,<2.0.0.0)"
+    "kaggle (>=1.7.4.5,<2.0.0.0)",
+    "requests (>=2.32.3,<3.0.0)",
+    "fredapi (>=0.5.2,<0.6.0)"
 ]
 
 [tool.poetry]
+package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.2.0"
 black = "^25.1.0"
 isort = "^6.0.1"
 mypy = "^1.15.0"
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

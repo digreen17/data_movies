@@ -29,15 +29,15 @@ clean:
 ## Lint using flake8, black, and isort (use `make format` to do formatting)
 .PHONY: lint
 lint:
-	flake8 scripts notebooks
-	isort --check --diff scripts notebooks
-	black --check scripts notebooks
+	flake8 ./scripts 
+	isort --check --diff ./scripts 
+	black --check ./scripts 
 
 ## Format source code with black
 .PHONY: format
 format:
-	isort scripts notebooks
-	black scripts notebooks
+	isort scripts 
+	black scripts 
 
 
 
