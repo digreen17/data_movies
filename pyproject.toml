@@ -13,8 +13,7 @@ dependencies = [
     "python-dotenv (>=1.1.0,<2.0.0)",
     "kaggle (>=1.7.4.5,<2.0.0.0)",
     "requests (>=2.32.3,<3.0.0)",
-    "fredapi (>=0.5.2,<0.6.0)",
-    "matplotlib (>=3.10.3,<4.0.0)"
+    "fredapi (>=0.5.2,<0.6.0)"
 ]
 
 [tool.poetry]
@@ -26,6 +25,14 @@ black = "^25.1.0"
 isort = "^6.0.1"
 mypy = "^1.15.0"
 ipykernel = "^6.29.5"
+
+
+[tool.poetry.group.eda]
+optional = true
+
+[tool.poetry.group.eda.dependencies]
+matplotlib = "^3.10.3"
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
