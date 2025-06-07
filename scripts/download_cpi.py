@@ -6,7 +6,7 @@ from fredapi import Fred
 SERIES_ID = "CPIAUCNS"
 
 
-def download_cpi(path):
+def download_cpi(path: str) -> None:
     fred = Fred(api_key=os.environ["FRED_KEY"])
     data = fred.get_series(SERIES_ID)
 
