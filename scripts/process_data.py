@@ -1,11 +1,10 @@
 import argparse
-
+from pathlib import Path
 import pandas as pd
 
-
-def process_data(raw_path, save_path):
-    df_tmdb = pd.read_csv(
-        f"./{raw_path}/tmdb_data.csv",
+def read_raw_tmdb(path: Path) -> pd.DataFrame:
+    return pd.read_csv(
+        path,
         usecols=[
             "id",
             "title",
@@ -20,11 +19,16 @@ def process_data(raw_path, save_path):
         ],
         parse_dates=["release_date"],
     )
-    df_cpi = pd.read_csv(
-        f"./{raw_path}/cpi_data.csv",
+
+def read_raw_cpi(path: Path) -> pd.DataFrame:
+    return pd.read_csv(
+        path,
         parse_dates=["year"],
     ).rename(columns={"year": "cpi_date"})
 
+
+def process_data(df_tmdb: pd.DataFrame, df_cpi: pd.DataFrame) -> pd.DataFrame:
+    
     latest_cpi = df_cpi.loc[df_cpi["cpi_date"].idxmax(), "cpi"]
 
     str_column = df_tmdb.select_dtypes(include="object").columns
@@ -84,24 +88,35 @@ def process_data(raw_path, save_path):
         ]
     ].copy()
     df_filtered = df_filtered.reset_index(drop=True)
+    return df_filtered 
 
-    df_filtered.to_csv(f"{save_path}/processed_data.csv")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download CPI and TMDB data")
     parser.add_argument(
-        "--raw_path",
-        type=str,
-        default="data/raw",
-        help="path to the directory for saving raw data (default: data/raw)",
+        "--tmdb",
+        type=Path,
+        default="data/raw/tmdb_data.csv",
+        help="path for raw tmdb dataset",
     )
     parser.add_argument(
-        "--save_path",
-        type=str,
-        default="data/processed",
-        help="path to the directory for saving processed data (default: data/processed)",
+        "--cpi",
+        type=Path,
+        default="data/raw/cpi_data.csv",
+        help="path for raw cpi dataset",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default="data/processed/processed_data.csv",
+        help="path for saving processed_data",
     )
     args = parser.parse_args()
 
-    process_data(args.raw_path, args.save_path)
+    df_tmdb = read_raw_tmdb(args.tmdb)
+    df_cpi = read_raw_cpi(args.cpi)
+
+    df_filtered = process_data(df_tmdb, df_cpi)
+
+    df_filtered.to_csv(args.output)
