@@ -37,7 +37,7 @@ def process_tmdb(df_tmdb: pd.DataFrame) -> pd.DataFrame:
 
     df_tmdb["release_month"] = (df_tmdb["release_date"].dt.to_period("M").dt.to_timestamp())
     df_tmdb["main_country"] = df_tmdb["production_countries"].str.split(",", expand=True)[0]
-
+    df_tmdb = df_tmdb.drop(columns="production_countries")
     df_tmdb["genres"] = df_tmdb["genres"].fillna("undefined")
 
     return df_tmdb
@@ -55,39 +55,27 @@ def filter_tmdb(df_tmdb: pd.DataFrame, min_release_year: datetime, min_q: float=
 
     return df_filtered
 
+def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
+    latest_cpi = df.loc[df["cpi_date"].idxmax(), "cpi"]
+    df["current_budget"] = df["budget"] * (latest_cpi / df["cpi"])
+
+    df["current_revenue"] = df["revenue"] * (
+        latest_cpi / df["cpi"]
+    )
+    return df
+
+def merge_data(df_tmdb: pd.DataFrame, df_cpi: pd.DataFrame) -> pd.DataFrame:
+    df_merged = df_tmdb.merge(df_cpi, left_on="release_month", right_on="cpi_date", how="left")
+    df_merged = df_merged.drop(columns='release_month')
+    return df_merged.reset_index(drop=True)
 
 def process_data(df_tmdb: pd.DataFrame, df_cpi: pd.DataFrame) -> pd.DataFrame:
     df_tmdb = process_tmdb(df_tmdb)
     df_tmdb_filtered = filter_tmdb(df_tmdb, df_cpi["cpi_date"].min())
-
-    df_merged = df_tmdb_filtered.merge(df_cpi, left_on="release_month", right_on="cpi_date", how="left")
-
-    latest_cpi = df_cpi.loc[df_cpi["cpi_date"].idxmax(), "cpi"]
-    df_merged["current_budget"] = df_merged["budget"] * (latest_cpi / df_merged["cpi"])
-
-    df_merged["current_revenue"] = df_merged["revenue"] * (
-        latest_cpi / df_merged["cpi"]
-    )
-
-    df_filtered = df_merged[
-        [
-            "id",
-            "title",
-            "original_title",
-            "original_language",
-            "release_date",
-            "genres",
-            "budget",
-            "revenue",
-            "vote_average",
-            "main_country",
-            "cpi",
-            "current_budget",
-            "current_revenue",
-        ]
-    ]
-    df_filtered = df_filtered.reset_index(drop=True)
-    return df_filtered
+    df_merged = merge_data(df_tmdb_filtered, df_cpi)
+    df_final = adjust_inflation(df_merged)
+    return df_final
+    
 
 
 if __name__ == "__main__":
