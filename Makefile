@@ -30,14 +30,14 @@ clean:
 .PHONY: lint
 lint:
 	flake8 ./scripts 
-	isort --check --diff ./scripts 
+	isort --check --diff ./scripts ./tests 
 	black --check ./scripts 
 
 ## Format source code with black
 .PHONY: format
 format:
-	isort scripts 
-	black scripts 
+	isort scripts tests 
+	black scripts tests 
 
 
 
