@@ -102,6 +102,13 @@ def process_data(df_tmdb: pd.DataFrame, df_cpi: pd.DataFrame) -> pd.DataFrame:
     return df_final
 
 
+def main(tmdb_path: Path, cpi_path: Path) -> pd.DataFrame:
+    df_tmdb = read_raw_tmdb(tmdb_path)
+    df_cpi = read_raw_cpi(cpi_path)
+    df_filtered = process_data(df_tmdb, df_cpi)
+    return df_filtered
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download CPI and TMDB data")
     parser.add_argument(
@@ -124,9 +131,5 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    df_tmdb = read_raw_tmdb(args.tmdb)
-    df_cpi = read_raw_cpi(args.cpi)
-
-    df_filtered = process_data(df_tmdb, df_cpi)
-
+    df_filtered = main(args.tmdb, args.cpi)
     df_filtered.to_csv(args.output)
