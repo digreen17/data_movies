@@ -13,7 +13,7 @@ DEFAULT_OUTPUT_PATH = Path("data/processed/processed_data.csv")
 def _check_required_columns(df: pd.DataFrame, required_columns: list[str]) -> None:
     missing = set(required_columns) - set(df.columns)
     if len(missing) > 0:
-        raise ValueError(f"missing required columns: {', '.join(missing)}")
+        raise ValueError(f"missing required columns: {', '.join(sorted(missing))}")
 
 def read_raw_tmdb(path: Path) -> pd.DataFrame:
     return pd.read_csv(
