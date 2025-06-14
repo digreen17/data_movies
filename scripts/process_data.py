@@ -127,7 +127,7 @@ if __name__ == "__main__":
         "--output",
         type=Path,
         default=DEFAULT_OUTPUT_PATH,
-        help="path for saving processed_data",
+        help="path for saving processed data",
     )
     args = parser.parse_args()
 
