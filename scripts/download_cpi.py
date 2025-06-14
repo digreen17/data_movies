@@ -1,16 +1,34 @@
+import argparse
 import os
+from pathlib import Path
 
 import pandas as pd
+from dotenv import load_dotenv
 from fredapi import Fred
+
+load_dotenv()
 
 SERIES_ID = "CPIAUCNS"
 
 
-def download_cpi(path: str) -> None:
+def download_cpi(path: Path) -> None:
     fred = Fred(api_key=os.environ["FRED_KEY"])
     data = fred.get_series(SERIES_ID)
 
     df_fred = pd.DataFrame(data, columns=["cpi"])
     df_fred.index.name = "year"
 
-    df_fred.to_csv(f"{path}/cpi_data.csv")
+    df_fred.to_csv(path)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Download CPI data")
+    parser.add_argument(
+        "--path",
+        type=Path,
+        default="data/raw/cpi_data.csv",
+        help="path for saving cpi data",
+    )
+    args = parser.parse_args()
+
+    download_cpi(args.path)
