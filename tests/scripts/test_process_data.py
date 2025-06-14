@@ -226,6 +226,21 @@ class TestProcess:
         df_output = df_output.reset_index(drop=True)
         assert_frame_equal(df_output, df_want)
 
+    def test_columns_process_tmdb(self):
+        df = pd.DataFrame(
+                    {
+                        "not_genres": ["genre_1", "genre_2", "genre_3"],
+                        "not_release_date": pd.to_datetime(
+                            ["2021-08-20", "2021-07-01", "2021-06-11"]
+                        ),
+                        "production_countries": ["country_1", "country_2", "country_2"],
+                    }
+                )
+        with pytest.raises(
+            ValueError, match="missing required columns: genres, release_date"
+        ):
+            process_tmdb(df)
+
 
 class TestMerge:
     @pytest.mark.parametrize(
@@ -259,7 +274,8 @@ class TestMerge:
         df_output = df_output.reset_index(drop=True)
         assert_frame_equal(df_output, df_want)
 
-    def test_absence_merge_columns(self):
+
+    def test_columns_merge_tmdb(self):
         df_tmdb = pd.DataFrame(
             {
                 "not_release_month": pd.Series([], dtype="object"),
@@ -267,11 +283,34 @@ class TestMerge:
         )
         df_cpi = pd.DataFrame(
             {
-                "not_cpi_date": pd.to_datetime([]),
+                "cpi_date": pd.to_datetime([]),
             }
         )
-        with pytest.raises(KeyError, match="cpi_date"):
+        with pytest.raises(
+            ValueError, match="missing required columns: release_month"
+        ):
             merge_data(df_tmdb, df_cpi)
+
+    def test_columns_merge_cpi(self):
+        df_tmdb = pd.DataFrame(
+            {
+                "release_month": pd.Series([], dtype="object"),
+            }
+        )
+        df_cpi = pd.DataFrame(
+            {
+                "not_cpi_date": pd.to_datetime([]),
+                "not_cpi": []
+
+            }
+        )
+        with pytest.raises(
+            ValueError, match="missing required columns: cpi, cpi_date"
+        ):
+            merge_data(df_tmdb, df_cpi)
+    
+
+
 
 
 class TestInflation:
@@ -322,5 +361,20 @@ class TestInflation:
         )
         with pytest.raises(
             ValueError, match="attempt to get argmax of an empty sequence"
+        ):
+            adjust_inflation(df)
+
+
+    def test_columns_adjust_inflation(self):
+        df = pd.DataFrame(
+            {
+                "not_cpi_date": pd.to_datetime([]),
+                "not_cpi": pd.Series([], dtype="float64"),
+                "budget": pd.Series([], dtype="float64"),
+                "revenue": pd.Series([], dtype="float64"),
+            }
+        )
+        with pytest.raises(
+            ValueError, match="missing required columns: cpi, cpi_date"
         ):
             adjust_inflation(df)
