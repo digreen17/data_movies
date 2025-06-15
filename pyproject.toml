@@ -25,7 +25,20 @@ black = "^25.1.0"
 isort = "^6.0.1"
 mypy = "^1.15.0"
 ipykernel = "^6.29.5"
+pytest = "^8.4.0"
+
+
+[tool.poetry.group.eda]
+optional = true
+
+[tool.poetry.group.eda.dependencies]
+matplotlib = "^3.10.3"
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
