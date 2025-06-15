@@ -10,6 +10,10 @@ PYTHON_INTERPRETER = python
 # COMMANDS                                                                      #
 #################################################################################
 
+## Install Python dependencies via Poetry
+.PHONY: install
+install:
+	poetry install
 
 ## Install Python dependencies
 .PHONY: requirements
@@ -38,5 +42,10 @@ lint:
 format: 
 	black scripts tests 
 	isort scripts tests
+
+## Run tests with pytest (use `make test`)
+.PHONY: test
+test:
+	pytest tests
 
 
