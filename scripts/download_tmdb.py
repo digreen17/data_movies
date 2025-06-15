@@ -7,6 +7,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 load_dotenv()
 
 TMDB_DATASET = "asaniczka/tmdb-movies-dataset-2023-930k-movies"
+DEFAULT_TMDB_PATH = Path("data/raw/tmdb_data.csv")
 
 
 def download_tmdb(path: Path) -> None:
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--path",
         type=Path,
-        default="data/raw/tmdb_data.csv",
+        default=DEFAULT_TMDB_PATH,
         help="path for saving tmdb data",
     )
     args = parser.parse_args()

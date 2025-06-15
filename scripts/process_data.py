@@ -10,10 +10,12 @@ DEFAULT_TMDB_PATH = Path("data/raw/tmdb_data.csv")
 DEFAULT_CPI_PATH = Path("data/raw/cpi_data.csv")
 DEFAULT_OUTPUT_PATH = Path("data/processed/processed_data.csv")
 
+
 def _check_required_columns(df: pd.DataFrame, required_columns: list[str]) -> None:
     missing = set(required_columns) - set(df.columns)
     if len(missing) > 0:
-        raise ValueError(f"missing required columns: {', '.join(sorted(missing))}")
+        raise ValueError(f"missing required columns: {', '.join(missing)}")
+
 
 def read_raw_tmdb(path: Path) -> pd.DataFrame:
     return pd.read_csv(
@@ -42,7 +44,7 @@ def read_raw_cpi(path: Path) -> pd.DataFrame:
 
 
 def process_tmdb(df_tmdb: pd.DataFrame) -> pd.DataFrame:
-    _check_required_columns(df_tmdb, ['release_date', 'production_countries', 'genres'])
+    _check_required_columns(df_tmdb, ["release_date", "production_countries", "genres"])
     str_column = df_tmdb.select_dtypes(include="object").columns
     for col in str_column:
         df_tmdb[col] = df_tmdb[col].str.lower().str.strip()
@@ -61,7 +63,7 @@ def process_tmdb(df_tmdb: pd.DataFrame) -> pd.DataFrame:
 def filter_tmdb(
     df_tmdb: pd.DataFrame, min_release_year: datetime, min_q: float, max_q: float
 ) -> pd.DataFrame:
-    _check_required_columns(df_tmdb, ['original_title', 'release_date', 'revenue'])
+    _check_required_columns(df_tmdb, ["original_title", "release_date", "revenue"])
     df_tmdb = df_tmdb.drop_duplicates().reset_index(drop=True)
     df_tmdb = df_tmdb.drop_duplicates(subset=["original_title", "release_date"])
     df_tmdb = df_tmdb.loc[df_tmdb["release_date"] > min_release_year]
@@ -77,7 +79,7 @@ def filter_tmdb(
 
 
 def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
-    _check_required_columns(df, ['cpi_date', 'cpi', 'budget', 'revenue'])
+    _check_required_columns(df, ["cpi_date", "cpi", "budget", "revenue"])
     latest_cpi = df.loc[df["cpi_date"].idxmax(), "cpi"]
     df = df.loc[df["cpi"] > 0]
     df["current_budget"] = df["budget"] * (latest_cpi / df["cpi"])
@@ -86,8 +88,8 @@ def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def merge_data(df_tmdb: pd.DataFrame, df_cpi: pd.DataFrame) -> pd.DataFrame:
-    _check_required_columns(df_tmdb, ['release_month'])
-    _check_required_columns(df_cpi, ['cpi_date', 'cpi'])
+    _check_required_columns(df_tmdb, ["release_month"])
+    _check_required_columns(df_cpi, ["cpi_date", "cpi"])
     df_merged = df_tmdb.merge(
         df_cpi, left_on="release_month", right_on="cpi_date", how="left"
     )

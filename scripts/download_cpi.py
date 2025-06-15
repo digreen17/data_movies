@@ -9,6 +9,7 @@ from fredapi import Fred
 load_dotenv()
 
 SERIES_ID = "CPIAUCNS"
+DEFAULT_CPI_PATH = Path("data/raw/cpi_data.csv")
 
 
 def download_cpi(path: Path) -> None:
@@ -26,7 +27,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--path",
         type=Path,
-        default="data/raw/cpi_data.csv",
+        default=DEFAULT_CPI_PATH,
         help="path for saving cpi data",
     )
     args = parser.parse_args()
