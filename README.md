@@ -50,6 +50,10 @@ KAGGLE_KEY
 
 **`make lint`** - проверяет стиль кода с помощью flake8, black и isort
 
+## Пайплайн 
+
+**`make etl`** - запускает etl пайплайн 
+
 
 
 
