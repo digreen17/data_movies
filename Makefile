@@ -48,4 +48,7 @@ format:
 test:
 	pytest tests
 
-
+## Run pipeline snakemake (use `make etl`)
+.PHONY: etl
+etl: 
+	snakemake -F -c 1

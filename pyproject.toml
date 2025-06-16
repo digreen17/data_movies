@@ -13,7 +13,9 @@ dependencies = [
     "python-dotenv (>=1.1.0,<2.0.0)",
     "kaggle (>=1.7.4.5,<2.0.0.0)",
     "requests (>=2.32.3,<3.0.0)",
-    "fredapi (>=0.5.2,<0.6.0)"
+    "fredapi (>=0.5.2,<0.6.0)",
+    "snakemake (==7.32.4)",
+    "pulp (==2.7)"
 ]
 
 [tool.poetry]
