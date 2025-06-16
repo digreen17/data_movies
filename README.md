@@ -1,59 +1,48 @@
-## Скрипты для сбора и обработки данных
+# Data Movies
 
-- **`download_tmdb.py`** - скрипт для скачивания датасета с Kaggle, с информацией о фильмах. Датасет с Kaggle подгружает данные с сайта TMDB. 
+ETL-пайплайн для сбора и подготовки данных к дашборду **DataLense**.
 
-- **`download_cpi.py`** - скрипт для загрузки данных CPI (индекса потребительских цен). Скачивает данные с сайта FRED с помощью API-ключа
+[Перейти к дашборду](placeholder)
 
-- **`process_data.py`** - скрипт для обработки данных. Обрабатывает скачанные данные: фильтрует, объединяет и пересчитывает значения с учётом инфляции.
+## Источники данных
 
-### Запуск скрипта download_tmdb
+### TMDB Movie Dataset
+Полный датасет фильмов с платформы Kaggle:  
+[Ссылка на источник](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)  
+Обновляется ежедневно.
 
-`python scripts/download_tmdb.py` **`--path`** `path/to/your_file.csv`
+### FRED (Federal Reserve Bank of St. Louis)
+Источник данных по инфляции (индекс потребительских цен — CPI):  
+[Ссылка на источник](https://fred.stlouisfed.org/series/CPIAUCNS)  
+Обновление ежемесячно.
 
+## Установка
 
-- По умолчанию аргумент **--path** сохраняет результат в `data/raw/tmdb_data.csv`
+1. Создайте файл `.env` на основе шаблона `.env.example`:
+   - Укажите переменные `KAGGLE_USERNAME`, `KAGGLE_KEY`
+   - Добавьте API-ключ `FRED_KEY`
 
-**Важно:** Нужно быть авторизованным в Kaggle CLI, так как в скрипте ссылаемся на KAGGLE_USERNAME и
-KAGGLE_KEY
+2. Установите зависимости:
+```bash
+make install
+```
 
-### Запуск скрипта download_cpi
+## ETL
 
-`python scripts/download_cpi.py` **`--path`** `path/to/your_file.csv`
+![DAG](./references/dag.png)
 
-- По умолчанию аргумент **--path** сохраняет результат в `data/raw/cpi_data.csv`
+Для скачивания и обработки данных:
+```bash
+make etl
+```
 
-**Важно:** Важно получить API-ключ с сайта FRED, так как в скрипте ссылаемся на FRED_KEY
+## Тестирование и проверка кода
+```bash
+make test    # запускает юнит-тесты (pytest)
+make format  # автоформатирование black + isort
+make lint    # проверка flake8, black, isort
+```
 
-
-
-### Запуск скрипта process_data
-
-`python scripts/process_data.py \`
-  **`--tmdb`** `path/to/tmdb.csv \`
-  **`--cpi`** `path/to/cpi.csv \`
-  **`--output`** `path/to/processed.csv`
-
-- `--tmdb` по умолчанию `data/raw/tmdb_data.csv`
-- `--cpi` по умолчанию `data/raw/cpi_data.csv`
-- `--output` по умолчанию сохраняет обработанные данные в `data/processed/processed_data.csv`
-
-
-## Запуск тестов
-
-**`make test`** - выполняет юнит-тесты с помощью pytest
-
-## Форматирование кода
-
-**`make format`** - автоматически форматирует python-код с помощью black и сортирует импорты с помощью isort
-
-## Линтинг кода
-
-**`make lint`** - проверяет стиль кода с помощью flake8, black и isort
-
-## Пайплайн 
-
-**`make etl`** - запускает etl пайплайн 
-
-
-
+## Лицензия
+Проект распространяется под лицензией [MIT](LICENSE).
 
