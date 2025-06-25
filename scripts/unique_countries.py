@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 DEFAULT_OUTPUT_PATH = Path("data/processed/processed_data.csv")
-COUNTRY_PATH = Path("data/processed/unique_countries.csv")
+COUNTRY_PATH = Path("data/additional/unique_countries.csv")
 
 
 def unique_countries(input_path: Path, output_path: Path) -> None:

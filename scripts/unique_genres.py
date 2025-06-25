@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 DEFAULT_OUTPUT_PATH = Path("data/processed/processed_data.csv")
-GENRES_PATH = Path("data/processed/unique_genres.csv")
+GENRES_PATH = Path("data/additional/unique_genres.csv")
 
 
 def unique_genres(input_path: Path, output_path: Path) -> None:

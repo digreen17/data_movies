@@ -51,6 +51,7 @@ def process_tmdb(df_tmdb: pd.DataFrame) -> pd.DataFrame:
     df_tmdb["release_month"] = (
         df_tmdb["release_date"].dt.to_period("M").dt.to_timestamp()
     )
+    df_tmdb["main_country"] = df_tmdb["production_countries"].str.split(",", expand=True)[0]
     df_tmdb["production_countries"] = df_tmdb["production_countries"].fillna("undefined")
     df_tmdb["genres"] = df_tmdb["genres"].fillna("undefined")
 
