@@ -1,6 +1,7 @@
 rule all:
     input:
-        "data/processed/processed_data.csv"
+        "data/additional/unique_genres.csv",
+        "data/additional/unique_countries.csv"
 rule download_cpi:
     output:
         "data/raw/cpi_data.csv"
@@ -19,3 +20,17 @@ rule process_data:
         "data/processed/processed_data.csv"
     shell:
         """python scripts/process_data.py --tmdb {input.tmdb} --cpi {input.cpi} --output {output}"""
+rule unique_genres:
+    input:
+        "data/processed/processed_data.csv"
+    output:
+        "data/additional/unique_genres.csv"
+    shell:
+        """python scripts/unique_genres.py --input {input} --output {output}"""
+rule unique_countries:
+    input:
+        "data/processed/processed_data.csv"
+    output:
+        "data/additional/unique_countries.csv"
+    shell:
+        """python scripts/unique_countries.py --input {input} --output {output}"""
