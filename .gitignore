@@ -173,6 +173,9 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# kaggle
+.kaggle/
+
 # CSV 
 data/**/*.csv
 
