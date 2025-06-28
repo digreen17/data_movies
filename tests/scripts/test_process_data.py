@@ -149,8 +149,8 @@ class TestProcess:
                     {
                         "genres": ["drama, romance"],
                         "release_date": pd.to_datetime(["2021-08-20"]),
+                        "production_countries": ["france"],
                         "release_month": pd.to_datetime(["2021-08-01"]),
-                        "main_country": ["france"],
                     }
                 ),
             ),
@@ -166,8 +166,8 @@ class TestProcess:
                     {
                         "genres": ["genre_1"],
                         "release_date": pd.to_datetime(["2021-08-20"]),
+                        "production_countries": ["spain, france, japan"],
                         "release_month": pd.to_datetime(["2021-08-01"]),
-                        "main_country": ["spain"],
                     }
                 ),
             ),
@@ -187,10 +187,10 @@ class TestProcess:
                         "release_date": pd.to_datetime(
                             ["2021-08-20", "2021-07-01", "2021-06-11"]
                         ),
+                        "production_countries": ["country_1", "country_2", "country_2"],
                         "release_month": pd.to_datetime(
                             ["2021-08-01", "2021-07-01", "2021-06-01"]
                         ),
-                        "main_country": ["country_1", "country_2", "country_2"],
                     }
                 ),
             ),
@@ -210,10 +210,10 @@ class TestProcess:
                         "release_date": pd.to_datetime(
                             ["2021-08-20", "2021-07-01", "2021-06-11"]
                         ),
+                        "production_countries": ["country_1", "country_2", "country_2"],
                         "release_month": pd.to_datetime(
                             ["2021-08-01", "2021-07-01", "2021-06-01"]
                         ),
-                        "main_country": ["country_1", "country_2", "country_2"],
                     }
                 ),
             ),
