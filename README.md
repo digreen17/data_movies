@@ -2,7 +2,7 @@
 
 ETL-пайплайн для сбора и подготовки данных к дашборду **DataLense**.
 
-TODO: add screenshot
+![dashboard](./references/dashboard_tmdb.png)
 
 [Перейти к дашборду](https://datalens.yandex/0lqr1ktbcthyl)
 
